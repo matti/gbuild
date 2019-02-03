@@ -1,0 +1,18 @@
+steps:
+<% if @debug %>
+  - name: busybox
+    entrypoint: sh
+    args:
+      - -c
+      - "ls -l"
+<% end %>
+  - name: gcr.io/kaniko-project/executor:latest
+    args:
+<% if @dockerfile %>
+      - --dockerfile=<%= @dockerfile %>
+<% end %>
+      - --cache=<%= @cache %>
+      - --destination=<%= @image %>
+<% @build_args.each do |build_arg| %>
+      - --build-arg=<%= build_arg %>
+<% end %>
