@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gbuild (0.1.0)
+    gbuild (0.2.0)
       clamp
       kommando
 
