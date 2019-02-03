@@ -1,7 +1,49 @@
----
-sudo: false
-language: ruby
-cache: bundler
-rvm:
-  - 2.5.3
-before_install: gem install bundler -v 1.16.6
+stages:
+  - name: binary
+    if: tag IS present
+
+jobs:
+  include:
+    - stage: binary
+      os: linux
+      sudo: required
+      rvm:
+        - "2.6"
+
+      before_install:
+        - curl -L https://github.com/matti/gem2exe/releases/download/v0.3.2/gem2exe-linux-amd64-v0.3.2.gz
+        - gzip -d gem2exe-linux-amd64-v0.3.2.gz
+        - chmod +x gem2exe-linux-amd64-v0.3.2
+        - sudo mv gem2exe-linux-amd64-v0.3.2 /usr/local/bin/gem2exe
+      script:
+        - mkdir releases
+        - gem2exe build --sudo --out releases/gbuild-linux-amd64-${TRAVIS_TAG} local gbuild
+
+    - stage: binary
+      os: osx
+      sudo: required
+      rvm:
+        - "2.6"
+      before_install:
+        - curl -L https://github.com/matti/gem2exe/releases/download/v0.3.2/gem2exe-darwin-amd64-v0.3.2.gz
+        - gzip -d gem2exe-darwin-amd64-v0.3.2.gz
+        - chmod a+x gem2exe-darwin-amd64-v0.3.2
+        - sudo mv gem2exe-darwin-amd64-v0.3.2 /usr/local/bin/gem2exe
+      script:
+        - mkdir releases
+        - gem2exe local --out releases/gem2exe-darwin-amd64-${TRAVIS_TAG} gem2exe
+
+deploy:
+  - provider: releases
+    api_key:
+      secure: "d0uXeYO/b1yb/9NgUAlUqAqDgfCgGLxPork1qIaJ5fuK0UMtqKvJp40jLhpoiGjGrc+YvVJ55otlxH5PBnofW/QaEGYJVtWMi54VZlddsszYk6wfsVQFFgVdtGVly//ImfjEIobdEBVzJp+IjX7OA6EXriCH9VxpdwC+gEL8Fi2jyxmTtM/x16ONGxYYzImrXL5iQj8ETUgPkElVaoAm9JceApnu3iwEMR1R+U9zeWUYvBYCjehg1aKkPy42Grm5m9rsYMeQ+DossCPu873lZBl3L9Pj2BpRoBVZsAaXCwARRlfh9B5lMMWVxaf7SDrk0o7r+nSGaV3BywxuM5P0JNOBeh4z3bf/CWelMF7oSC04dgNwZbvv9YR6j+gQqFpXTU74AYVLf3Zt8b5iY30z/JQtyoWcX+QVyTrfgVsoZjjzzqdEFlbjClhYUHsV2gtqixy/78EsqDkLuLL3FXcxBNd//hwBvgUJSIBqlb4Ecnfu1bxLVW/xHUQReklFAv5XhNJSAlrzLVdRdaBnFS3zjxJ11VHVZH1b+gTbBXWG3iUtS5wWZV5MmcOrc5QdZQOgtVfnmW0pRoGUzrA4S/QLUkzuhcYFodvv19UTyO9mDQgf3K9+sJ3XtcUKiTcHmg1WzFp35BGi6PVhXTtgg2LcsmHhkGxMuCu0S/ksX2mXoZw="
+    file_glob: true
+    file: releases/*
+    skip_cleanup: true
+    on:
+      tags: true
+  - provider: rubygems
+    api_key:
+      secure: "oNnsB58gFTwkBu+XpxhnFGfaMBonKghmh08NnH4naPmOH4aOkCwI2CB7UIBKq3dmZlfO9h67nVyQ9NvDVhmOrsSxkudzluIZ0RXiaz57YuWYP21j7TeyssuQIUaXEBbRuE/wb85rdYtRY+je6/vJjVZoRk524/VnWBf+guIRTY6yZWBzxwn/zECZsQgL7i9rXbaFO2Sm5XRDW//hwiIijqdBjQ3zvWeMSKh2in0GgCgbVmarYxFAV8bTXUgCOQIDM9Je4Q647430p8VpQ9kbhhSF2bdJVeeuUIMdnTel+OGjdejMoSEHIyRB1+QjPGKKXzx8JSOcON7C78af0lyZf6NEtJK4DnHfA6OJORhNSL4xvHvxlR20iiCuplOnLujzBppxnkA25ck4R5OodXkYUVT8dL+z6S2kDsnkiQ25frdHBks9MDD4AumdezhM06NbLWdwhJbN8D0B47z14ZSXOQ1zNYg2mqVidZS/qhbtlQEib70jIgGquj17ETEgTTSiyI0C5myc/rkLc1UYs8rKT7fY5VGeaaFmyHC/oQWSaM709rAJe35UvyYo6mTMBI6g/Vy8jmh1ZodXlzJE/CXfAkTI6s/zP2rABlnz3hxggE95ZEDrlO8q7v/njXGGpPjTH8HtAkqNzBDJEDRXPpB2jBuhhx75ho1YlCVYJj2lpOY="
+    on:
+      branch: master
