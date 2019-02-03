@@ -17,7 +17,7 @@ jobs:
         - gem2exe setup --sudo
       script:
         - mkdir releases
-        - gem2exe build --out releases/gbuild-linux-amd64-${TRAVIS_TAG} local gbuild
+        - gem2exe local --out releases/gbuild-linux-amd64-${TRAVIS_TAG} local gbuild
 
     - stage: binary
       os: osx
@@ -31,7 +31,7 @@ jobs:
         - gem2exe setup
       script:
         - mkdir releases
-        - gem2exe local --out releases/gem2exe-darwin-amd64-${TRAVIS_TAG} gem2exe
+        - gem2exe local --out releases/gbuild-darwin-amd64-${TRAVIS_TAG} gbuild
 
 deploy:
   - provider: releases
