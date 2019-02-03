@@ -11,10 +11,10 @@ jobs:
         - "2.6"
 
       before_install:
-        - curl -L https://github.com/matti/gem2exe/releases/download/v0.3.2/gem2exe-linux-amd64-v0.3.2.gz
-        - gzip -d gem2exe-linux-amd64-v0.3.2.gz
-        - chmod +x gem2exe-linux-amd64-v0.3.2
-        - sudo mv gem2exe-linux-amd64-v0.3.2 /usr/local/bin/gem2exe
+        - curl -L https://github.com/matti/gem2exe/releases/download/v0.3.2/gem2exe-linux-amd64-v0.3.2.gz | gunzip - > gem2exe
+        - chmod a+x gem2exe
+        - sudo mv gem2exe /usr/local/bin/gem2exe
+        - gem2exe setup
       script:
         - mkdir releases
         - gem2exe build --sudo --out releases/gbuild-linux-amd64-${TRAVIS_TAG} local gbuild
@@ -25,10 +25,10 @@ jobs:
       rvm:
         - "2.6"
       before_install:
-        - curl -L https://github.com/matti/gem2exe/releases/download/v0.3.2/gem2exe-darwin-amd64-v0.3.2.gz
-        - gzip -d gem2exe-darwin-amd64-v0.3.2.gz
-        - chmod a+x gem2exe-darwin-amd64-v0.3.2
-        - sudo mv gem2exe-darwin-amd64-v0.3.2 /usr/local/bin/gem2exe
+        - curl -L https://github.com/matti/gem2exe/releases/download/v0.3.2/gem2exe-darwin-amd64-v0.3.2.gz | gunzip - > gem2exe
+        - chmod a+x gem2exe
+        - sudo mv gem2exe /usr/local/bin/gem2exe
+        - gem2exe setup
       script:
         - mkdir releases
         - gem2exe local --out releases/gem2exe-darwin-amd64-${TRAVIS_TAG} gem2exe
