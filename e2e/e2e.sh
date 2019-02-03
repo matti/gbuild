@@ -18,4 +18,4 @@ exe/gbuild delete gcr.io/$GCLOUD_PROJECT/build_args
 exe/gbuild delete gcr.io/$GCLOUD_PROJECT/custom_dockerfile
 exe/gbuild delete gcr.io/$GCLOUD_PROJECT/nested_dockerfile
 
-exe/gbuild delete $GCLOUD_PROJECT
+exe/gbuild clean $GCLOUD_PROJECT
