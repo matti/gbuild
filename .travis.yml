@@ -14,10 +14,10 @@ jobs:
         - curl -L https://github.com/matti/gem2exe/releases/download/v0.3.2/gem2exe-linux-amd64-v0.3.2.gz | gunzip - > gem2exe
         - chmod a+x gem2exe
         - sudo mv gem2exe /usr/local/bin/gem2exe
-        - gem2exe setup
+        - gem2exe setup --sudo
       script:
         - mkdir releases
-        - gem2exe build --sudo --out releases/gbuild-linux-amd64-${TRAVIS_TAG} local gbuild
+        - gem2exe build --out releases/gbuild-linux-amd64-${TRAVIS_TAG} local gbuild
 
     - stage: binary
       os: osx
