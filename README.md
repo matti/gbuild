@@ -10,7 +10,7 @@ Fast Google Cloud Build builds without YAMLs or Git triggers.
 
 Recommended:
 
-Use binaries for Linux/Mac from
+Use binaries for Linux/Mac from https://github.com/matti/gbuild/releases
 
     wget https://github.com/matti/gbuild/releases/download/v0.3.0/gbuild-linux-amd64-v0.3.0
     chmod +x gbuild-linux-amd64-v0.3.0
