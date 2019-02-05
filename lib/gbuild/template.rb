@@ -5,7 +5,11 @@ module Gbuild
         File.join(__dir__, "..","..", "templates", name)
       )
 
-      @__erb = ERB.new File.read(path), trim_mode: "<>"
+      @__erb = if RUBY_VERSION >= '2.6'
+        ERB.new(File.read(path), trim_mode: '<>')
+      else
+        ERB.new(File.read(path), nil, '<>')
+      end
     end
 
     def set(key, value)
