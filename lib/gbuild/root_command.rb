@@ -6,19 +6,21 @@ module Gbuild
   class RootCommand < Clamp::Command
     banner "💥 gbuild #{Gbuild::VERSION}"
 
-    option ['-v', '--version'], :flag, "Show version information" do
-      puts Gbuild::VERSION
-      exit 0
-    end
-
     subcommand ["build"], "build", BuildCommand
     subcommand ["clean"], "clean", CleanCommand
     subcommand ["delete"], "delete", DeleteCommand
+    subcommand ["version"], "version", VersionCommand
 
     def self.run
       case ARGV.first
       when nil
         super
+      when "build"
+        ARGV.shift
+        BuildCommand.run
+      when "version"
+        ARGV.shift
+        VersionCommand.run
       when "clean"
         ARGV.shift
         CleanCommand.run

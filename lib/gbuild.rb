@@ -22,5 +22,6 @@ require_relative "gbuild/template"
 require_relative "gbuild/clean_command"
 require_relative "gbuild/build_command"
 require_relative "gbuild/delete_command"
+require_relative "gbuild/version_command"
 
 require_relative "gbuild/root_command"
